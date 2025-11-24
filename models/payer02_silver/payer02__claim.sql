@@ -2,7 +2,7 @@
 
 with source as (
     select *
-    from {{ source('payer01_ingested', 'payer01_claim') }}
+    from {{ source('payer02_ingested', 'payer02_claim') }}
 )
 
 select

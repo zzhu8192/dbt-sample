@@ -4,5 +4,5 @@ sources:
   - name: payer02_ingested
     schema: payer02_ingested
     tables:
-      - name: payer21_claim
+      - name: payer02_claim
         description: "Payer02 Raw claim data"
