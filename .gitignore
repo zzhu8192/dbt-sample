@@ -1,0 +1,8 @@
+# DBT artefacts
+target/
+dbt_modules/
+duckdb.db
+.aider*
+logs/
+dbt_sample.egg-info/*
+uv.lock

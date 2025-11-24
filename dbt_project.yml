@@ -1,0 +1,32 @@
+name: sample_dbt_project
+version: "1.0"
+config-version: 2
+
+profile: sample_dbt_project   # will be defined in profiles.yml (see step 5)
+
+model-paths: ["models"]
+seed-paths: ["data"]
+target-path: "target"
+clean-targets: ["target", "dbt_modules"]
+
+seeds:
+  sample_dbt_project:
+    payer01_claim:
+      +schema: payer01_ingested
+    payer02_claim:
+      +schema: payer02_ingested
+
+models:
+  # this must be set, or DBT will take profile level schema and prepend with "project_schema_".   Even if you do ""_
+  +schema: ""
+  sample_dbt_project:
+    +materialized: table
+    payer01_silver:
+      +schema: payer01_silver
+    payer02_silver:
+      +schema: payer02_silver
+
+flags:
+  use_materialization_v2: True
+  use_user_folder_for_python: True
+  use_managed_iceberg: True

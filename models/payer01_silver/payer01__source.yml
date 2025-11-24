@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: payer01_ingested
+    schema: payer01_ingested
+    tables:
+      - name: payer01_claim
+        description: "Payer01 Raw claim data"

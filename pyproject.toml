@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dbt-sample"
+description = ""
+authors = [
+    { name = "Zheng Zhu", email = "zzhu8192@gmail.com" }
+]
+requires-python = ">=3.11"
+readme = "README.md"
+# see setup.py
+dynamic = ["version"]
+dependencies = [
+    "dbt-core>=1.11.0rc1", 
+    "dbt-spark[PyHive]>=1.9.3", 
+    "dbt-spark[session]>=1.9.3"
+]
+
+[dependency-groups]
+test = []
+
+[tool.uv]
+package = false
+
+[tool.setuptools]
+packages = []

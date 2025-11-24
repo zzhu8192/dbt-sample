@@ -1,0 +1,16 @@
+sample_dbt_project:
+  outputs:
+    dev-session:
+      type: spark
+      method: session
+      schema: dbt
+      host: local
+    dev-thrift:
+      type: spark
+      method: thrift
+      schema: dbt
+      host: localhost
+      port: 10000
+
+  target: dev-thrift
+# target: dev-session
