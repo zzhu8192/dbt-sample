@@ -4,11 +4,24 @@ version: 2
 std_claim_line_columns: &std_claim_line_columns
   - name: claim_id
     description: "claim id"
-    data_type: string
+    data_type: bigint
 
   - name: patient_id
     description: "patient_id as int"
-    data_type: int
+    data_type: bigint
+
+  - name: claim_amount
+    description: "amount"
+    data_type: double
+
+  - name: diagnosis_code
+    description: "disgnosis_code"
+    data_type: string
+
+  - name: service_date
+    description: "amount"
+    data_type: date
+
 
 #YAML anchors (&alias / *alias) are resolved by the YAML parser, not dbt. Anchors exist only within a single file
 models:
