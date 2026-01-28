@@ -13,9 +13,9 @@ readme = "README.md"
 # see setup.py
 dynamic = ["version"]
 dependencies = [
-    "dbt-core>=1.11.0rc1", 
-    "dbt-spark[PyHive]>=1.9.3", 
-    "dbt-spark[session]>=1.9.3"
+    "dbt-core>=1.11.2", 
+    "dbt-spark[PyHive]>=1.10.0", 
+    "dbt-spark[session]>=1.10.0"
 ]
 
 [dependency-groups]
