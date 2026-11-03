@@ -1,8 +1,25 @@
-# DBT artefacts
+# dbt build artifacts & packages
 target/
 dbt_modules/
-duckdb.db
-.aider*
+dbt_packages/
 logs/
-dbt_sample.egg-info/*
-uv.lock
+.dbt/.user.yml
+duckdb.db
+
+# Python & virtual environment
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+
+# Editor & OS artifacts
+.DS_Store
+Thumbs.db
+*~
+*.swp
+.idea/
+.vscode/
+.aider*
