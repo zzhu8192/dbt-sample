@@ -1,0 +1,33 @@
+version: 2
+
+unit_tests:
+  - name: test_payer01__claim_transformation
+    description: "Unit test verifying column projection and schema contract for payer01__claim"
+    model: payer01__claim
+    given:
+      - input: source('payer01_ingested', 'payer01_claim')
+        rows:
+          - {claim_id: 100, patient_id: 11, service_date: "2023-01-10", claim_amount: 250.00, diagnosis_code: "A01"}
+          - {claim_id: 101, patient_id: 11, service_date: "2023-02-15", claim_amount: 125.50, diagnosis_code: "B02"}
+    expect:
+      rows:
+        - {claim_id: 100, patient_id: 11, service_date: "2023-01-10", claim_amount: 250.00, diagnosis_code: "A01"}
+        - {claim_id: 101, patient_id: 11, service_date: "2023-02-15", claim_amount: 125.50, diagnosis_code: "B02"}
+
+  - name: test_payer01__claim_inc_incremental_logic
+    description: "Unit test verifying incremental logic filtering by max claim_id"
+    model: payer01__claim_inc
+    overrides:
+      macros:
+        is_incremental: true
+    given:
+      - input: this
+        rows:
+          - {claim_id: 100, patient_id: 11, service_date: "2023-01-10", claim_amount: 250.00, diagnosis_code: "A01"}
+      - input: source('payer01_ingested', 'payer01_claim')
+        rows:
+          - {claim_id: 100, patient_id: 11, service_date: "2023-01-10", claim_amount: 250.00, diagnosis_code: "A01"}
+          - {claim_id: 105, patient_id: 12, service_date: "2023-03-01", claim_amount: 300.00, diagnosis_code: "C03"}
+    expect:
+      rows:
+        - {claim_id: 105, patient_id: 12, service_date: "2023-03-01", claim_amount: 300.00, diagnosis_code: "C03"}

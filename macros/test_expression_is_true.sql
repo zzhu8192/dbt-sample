@@ -1,4 +1,4 @@
-{% macro test_expression_is_true(model, column_name, expression) %}
+{% test expression_is_true(model, column_name, expression) %}
 /*
   Generic test: expression_is_true
 
@@ -20,4 +20,4 @@
 SELECT *
 FROM {{ model }}
 WHERE NOT ({{ expression }})
-{% endmacro %}
+{% endtest %}
