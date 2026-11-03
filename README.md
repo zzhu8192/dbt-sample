@@ -10,6 +10,14 @@ A reference implementation demonstrating modern **dbt (Data Build Tool)** practi
 
 ---
 
+> [!NOTE] Architecture & Execution Parity: Local Spark Distributions & Databricks
+> This project is designed for **systematic local development and automated CI/CD testing** across both **local Apache Spark distributions** and **Databricks clusters**:
+> - **Local Spark Distributions**: Supports running directly against local, standalone open-source Apache Spark (e.g., via the Spark Thrift Server on port 10000 or in-process PySpark sessions), eliminating the requirement to spin up expensive cloud warehouses or Databricks clusters just to develop and run tests.
+> - **Databricks & Cloud Parity**: The exact same models, strict contracts, custom macros, and tests deploy seamlessly to Databricks (SQL Warehouses or All-Purpose clusters via HTTP/ODBC) simply by toggling the dbt target.
+> - **CI/CD Friendly**: Enables fast, hermetic, zero-cost pipeline runs in CI runners (e.g., executing `uv run dbt test` against a local Spark container or process without cloud credentials).
+
+---
+
 ## Highlights
 
 - **Dependency Management via `uv`**:
@@ -194,13 +202,14 @@ WHERE NOT ({{ expression }})
 
 ## Configuration & Running dbt
 
-### 1. Profiles
+### 1. Profiles: Local Spark & Databricks Parity
 
-Profiles are located in [`.dbt/profiles.yml`](file:///home/zzhu/homerepos/dbt-sample/.dbt/profiles.yml):
+Profiles are located in [`.dbt/profiles.yml`](file:///home/zzhu/homerepos/dbt-sample/.dbt/profiles.yml). The setup supports seamless execution against local Apache Spark distributions and managed Databricks endpoints:
 
 ```yaml
 sample_dbt_project:
   outputs:
+    # 1. Local Open-Source Spark (Thrift Server via PyHive)
     dev-thrift:
       type: spark
       method: thrift
@@ -208,17 +217,43 @@ sample_dbt_project:
       host: localhost
       port: 10000
 
+    # 2. Local Open-Source Spark (PySpark in-process session)
     dev-session:
       type: spark
       method: session
       schema: dbt
       host: local
 
+    # 3. Databricks SQL Warehouse / All-Purpose Cluster
+    databricks-dev:
+      type: spark
+      method: http
+      schema: dbt
+      host: "{{ env_var('DATABRICKS_HOST', '<workspace-id>.cloud.databricks.com') }}"
+      http_path: "{{ env_var('DATABRICKS_HTTP_PATH', '/sql/1.0/endpoints/<endpoint-id>') }}"
+      token: "{{ env_var('DATABRICKS_TOKEN', '') }}"
+
   target: dev-thrift
 ```
 
-- **`dev-thrift`**: Connects via HiveServer2 / Spark Thrift JDBC bridge on port `10000`.
-- **`dev-session`**: Uses in-process PySpark local sessions.
+#### Running Against Local Spark
+To spin up a local Spark Thrift Server for local development and CI testing:
+```bash
+# Start the local Spark Thrift Server in your Spark installation directory
+$SPARK_HOME/sbin/start-thriftserver.sh --master "local[*]"
+
+# Verify dbt connection
+uv run dbt debug --profiles-dir .dbt
+```
+
+#### Running Against Databricks
+```bash
+export DATABRICKS_HOST="<workspace-id>.cloud.databricks.com"
+export DATABRICKS_HTTP_PATH="/sql/1.0/endpoints/<endpoint-id>"
+export DATABRICKS_TOKEN="<your-personal-access-token>"
+
+uv run dbt run --target databricks-dev --profiles-dir .dbt
+```
 
 ### 2. Common Commands
 
