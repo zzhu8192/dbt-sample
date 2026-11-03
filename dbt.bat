@@ -1,2 +1,3 @@
 @echo off
-.venv\scripts\dbt %1 %2 %3 %4 %5 %6 %7 %8 %9
+REM Wrapper script to execute dbt within the uv managed environment on Windows
+uv run dbt --profiles-dir .dbt %*

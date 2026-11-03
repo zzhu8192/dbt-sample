@@ -1,3 +1,8 @@
-#!/bin/bash
-export SPARK_HOME=/home/zzhu/spark-3.5.7-bin-hadoop3
-.venv/bin/dbt $1 $2 $3 $4 $5 $6 $7 $8 $9
+#!/usr/bin/env bash
+# Wrapper script to execute dbt within the uv managed virtual environment
+
+if [ -z "$SPARK_HOME" ] && [ -d "$HOME/spark-3.5.7-bin-hadoop3" ]; then
+    export SPARK_HOME="$HOME/spark-3.5.7-bin-hadoop3"
+fi
+
+exec uv run dbt --profiles-dir .dbt "$@"

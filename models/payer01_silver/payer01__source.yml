@@ -2,7 +2,7 @@ version: 2
 
 sources:
   - name: payer01_ingested
-    schema: payer01_ingested__zzhu
+    schema: "{{ 'payer01_ingested' if target.schema | upper in ['PRD', 'SBX', 'DEV', 'UAT', ''] else 'payer01_ingested__' ~ target.schema }}"
     tables:
       - name: payer01_claim
         description: "Payer01 Raw claim data"

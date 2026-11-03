@@ -1,0 +1,3 @@
+# dbt packages configuration
+# Add external packages here (e.g., dbt-labs/dbt_utils). Run 'dbt deps' or 'uv run dbt deps' to install.
+packages: []

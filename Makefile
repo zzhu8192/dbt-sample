@@ -1,19 +1,24 @@
-.PHONY: all sync build run test clean debug
+.PHONY: all sync build run test unit-test clean debug
 
 all: sync build run test
 
 sync:
 	uv sync
-	
+
 build:
-	# Use the dbt executable from the virtual‑env (forward slashes work everywhere)
-	.venv/scripts/dbt build
+	uv run dbt build --profiles-dir .dbt
 
 run:
-	.venv/scripts/dbt run
+	uv run dbt run --profiles-dir .dbt
 
 test:
-	.venv/scripts/dbt test
+	uv run dbt test --profiles-dir .dbt
+
+unit-test:
+	uv run dbt test --select "test_type:unit" --profiles-dir .dbt
 
 debug:
-	.venv/scripts/dbt debug
+	uv run dbt debug --profiles-dir .dbt
+
+clean:
+	uv run dbt clean
