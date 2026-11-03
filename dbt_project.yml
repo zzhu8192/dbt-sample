@@ -7,7 +7,7 @@ profile: sample_dbt_project   # will be defined in profiles.yml (see step 5)
 model-paths: ["models"]
 seed-paths: ["data"]
 target-path: "target"
-clean-targets: ["target", "dbt_modules"]
+clean-targets: ["target", "dbt_packages"]
 
 seeds:
   sample_dbt_project:
